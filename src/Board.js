@@ -139,6 +139,10 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var rows = this.rows();
       var colNum = majorDiagonalColumnIndexAtFirstRow;
+      if ( rows[0][colNum] === 0) {
+        return false;
+      }
+
       for (var i = 1; i < rows.length; i++) {
         colNum++;
 
@@ -157,12 +161,18 @@
     hasAnyMajorDiagonalConflicts: function() {
       var rows = this.rows();
 
-      var rowsCopy = rows.slice();
+      var rowsCopy = [];
+      for (var a = 0; a < rows.length; a ++) {
+        var subArray = [];
+        for (var b = 0; b < rows[a].length; b++) {
+          subArray.push(rows[a][b]);
+        }
+        rowsCopy.push(subArray);
+      }
       
       for (var i = 0; i < rowsCopy.length - 1; i++) {
         for (var j = 0; j < rowsCopy[i].length - 1; j++) {
-
-          if ( (rows[i][j] === 1) && (rows[i + 1][j + 1] === 1) ) {
+          if ( (rowsCopy[i][j] === 1) && (rowsCopy[i + 1][j + 1] === 1) ) {
             return true;
           }
           if ( rowsCopy[i][j] === 1) {
@@ -170,7 +180,6 @@
           }
         }
       }
-
       return false; // fixme
     },
 
@@ -183,6 +192,11 @@
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var rows = this.rows();
       var colNum = minorDiagonalColumnIndexAtFirstRow;
+
+      if ( rows[0][colNum] === 0) {
+        return false;
+      }
+
       for (var i = 1; i < rows.length; i++) {
         colNum--;
 
@@ -202,12 +216,19 @@
     hasAnyMinorDiagonalConflicts: function() {
       var rows = this.rows();
 
-      var rowsCopy = rows.slice();
+      var rowsCopy = [];
+      for (var a = 0; a <rows.length; a ++) {
+        var subArray = [];
+        for (var b = 0; b < rows[a].length; b++) {
+          subArray.push(rows[a][b]);
+        }
+        rowsCopy.push(subArray);
+      }
       
       for (var i = 0; i < rowsCopy.length - 1; i++) {
         for (var j = 1; j < rowsCopy[i].length; j++) {
 
-          if ( (rows[i][j] === 1) && (rows[i + 1][j - 1] === 1) ) {
+          if ( (rowsCopy[i][j] === 1) && (rowsCopy[i + 1][j - 1] === 1) ) {
             return true;
           }
           if ( rowsCopy[i][j] === 1) {
