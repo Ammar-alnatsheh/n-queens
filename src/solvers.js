@@ -15,21 +15,22 @@
 
 
 
-window.findNRooksSolution = function(m = 1) {
+window.findNRooksSolution = function(rows = 1) {
   var solution = []; //fixme
 
-  var board = new Board({n: m});
-  
-  var makeOptions = function (roundLeft, board) {
-    if (roundLeft === 0) {
-      solution.push(board.rows());
+  var board = new Board({n: rows});
+  var rowNumber = 0;
+  var makeOptions = function (rowNumber, board) {
+    if (rowNumber === rows) {
+      solution.push([board.rows()]);
       return;
     }
-    for (var i = m - 1; i < board.length; i++) {
+    for (var col = 0; col < board.rows()[rowNumber].length; col++) {
       var newBoard = new Board(board.rows());
-      if (!newBoard.hasRowConflictAt(m - 1) && !newBoard.hasColConflictAt(i)) {
-        newBoard.togglePiece(m - 1, i );
-        makeOptions(m - 1, newBoard);
+      newBoard.togglePiece(rowNumber, col );
+      if ((newBoard.hasRowConflictAt(rowNumber) === false) && (newBoard.hasColConflictAt(col) === false)) {
+        console.log(newBoard.rows());
+        makeOptions(rowNumber + 1, newBoard);
       } else {
         return;
       }
@@ -37,9 +38,9 @@ window.findNRooksSolution = function(m = 1) {
     
   };
 
-  makeOptions( m, board); 
+  makeOptions( rowNumber, board); 
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  console.log('Single solution for ' + rows + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
