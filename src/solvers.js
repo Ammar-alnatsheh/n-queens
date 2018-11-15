@@ -15,8 +15,29 @@
 
 
 
-window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+window.findNRooksSolution = function(m = 1) {
+  var solution = []; //fixme
+
+  var board = new Board({n: m});
+  
+  var makeOptions = function (roundLeft, board) {
+    if (roundLeft === 0) {
+      solution.push(board.rows());
+      return;
+    }
+    for (var i = m - 1; i < board.length; i++) {
+      var newBoard = new Board(board.rows());
+      if (!newBoard.hasRowConflictAt(m - 1) && !newBoard.hasColConflictAt(i)) {
+        newBoard.togglePiece(m - 1, i );
+        makeOptions(m - 1, newBoard);
+      } else {
+        return;
+      }
+    }
+    
+  };
+
+  makeOptions( m, board); 
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
